@@ -125,6 +125,11 @@ class DYMail
         }
     }
 
+    /**
+     * this will convert the array of emails and names into a string
+     * @param array $emailArr
+     * @return string
+     */
     private function _prepareEmailList($emailArr)
     {
         $emailStr = '';
@@ -139,6 +144,9 @@ class DYMail
         return $emailStr;
     }
 
+    /**
+     * this function will send html email
+     */
     private function _sendHTMLEmail()
     {
         $headers = 'MIME-Version: 1.0' . "\r\n";
@@ -156,6 +164,9 @@ class DYMail
         mail($this->receivers, $this->subject, $this->message, $headers);
     }
 
+    /**
+     * this function will send simple email
+     */
     private function _sendSimpleEmail()
     {
         $headers = 'From: ' . $this->sender . "\r\n";

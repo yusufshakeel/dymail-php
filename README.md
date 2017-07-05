@@ -1,6 +1,63 @@
 # dymail-php
 This is a mail project in php.
 
+# What's inside
+```
+dymail-php/
+├── src/
+│   └── DYMail/
+│       ├── autoload.php
+│       └── DYMail.php
+└── index.php
+
+```
+
+# How to use?
+
+Include the DYMail class and instantiate it. Pass the required parameters and it will send the email to the recipients.
+
+```
+require_once 'path/to/DYMail/DYMail.php';
+
+try {
+
+    $sender = array(
+        'sender@example.com' => 'Sender'
+    );
+
+    $receivers = array(
+        'receiver1@example.com' => 'Receiver 1',
+        'receiver2@example.com' => 'Receiver 2',
+        'receiver3@example.com' => 'Receiver 3'
+    );
+
+    $cc = array(
+        'cc1@example.com' => 'Cc 1',
+        'cc2@example.com' => 'Cc 2',
+        'cc3@example.com' => 'Cc 3'
+    );
+
+    $bcc = array(
+        'bcc1@example.com' => 'Bcc 1',
+        'bcc2@example.com' => 'Bcc 2',
+        'bcc3@example.com' => 'Bcc 3'
+    );
+
+    $subject = 'This is a sample subject.';
+
+    $message = <<<MSG
+<p>This is a sample message.</p>
+MSG;
+
+    $emailType = 'HTML';
+
+    $obj = new DYMail\DYMail($sender, $receivers, $cc, $bcc, $subject, $message, $emailType);
+
+} catch (\Exception $e) {
+    die("Error: " . $e->getMessage());
+}
+```
+
 # MIT License
 
 Copyright (c) 2017 Yusuf Shakeel
