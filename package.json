@@ -1,0 +1,27 @@
+{
+  "name": "dymail-php",
+  "version": "1.0.0",
+  "description": "This is a mail project in php.",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yusufshakeel/dymail-php.git"
+  },
+  "keywords": [
+    "mail",
+    "php",
+    "sendmail"
+  ],
+  "author": "Yusuf Shakeel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yusufshakeel/dymail-php/issues"
+  },
+  "homepage": "https://github.com/yusufshakeel/dymail-php#readme"
+}
