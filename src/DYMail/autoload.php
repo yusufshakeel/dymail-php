@@ -1,11 +1,11 @@
 <?php
 /**
- * file: email.php
+ * file: autoload.php
  * author: yusuf shakeel
  * github: https://github.com/yusufshakeel/dymail-php
  * date: 12-mar-2014 wed
- * description: This file contains the email example.
- *
+ * description: This file contains the autoload.
+ * 
  * MIT License
  *
  * Copyright (c) 2017 Yusuf Shakeel
@@ -28,41 +28,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-require_once '../src/DYMail/autoload.php';
 
-try {
-
-    $sender = array(
-        'sender@example.com' => 'Sender'
-    );
-
-    $receivers = array(
-        'receiver1@example.com' => 'Receiver 1',
-        'receiver2@example.com' => 'Receiver 2',
-        'receiver3@example.com' => 'Receiver 3'
-    );
-
-    $cc = array(
-        'cc1@example.com' => 'Cc 1',
-        'cc2@example.com' => 'Cc 2',
-        'cc3@example.com' => 'Cc 3'
-    );
-
-    $bcc = array(
-        'bcc1@example.com' => 'Bcc 1',
-        'bcc2@example.com' => 'Bcc 2',
-        'bcc3@example.com' => 'Bcc 3'
-    );
-
-    $subject = 'This is a sample subject.';
-
-    $message = 'This is a sample message.';
-
-    $emailType = 'SIMPLE';
-
-    $obj = new DYMail\DYMail($sender, $receivers, $cc, $bcc, $subject, $message, $emailType);
-
-} catch (\Exception $e) {
-    die("Error: " . $e->getMessage());
+if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+	throw new Exception('DYReImage requires PHP version 5.4 or higher.');
 }
-?>
+
+spl_autoload_register(function ($class) {
+	
+	$namespace = 'DYMail\\';
+	
+	$baseDir = __DIR__;
+	
+	// if class is not using namespace then return
+	$len = strlen($namespace);
+	if (strncmp($namespace, $class, $len) !== 0) {
+		return;
+	}
+	
+	// get the relative class
+	$relativeClass = substr($class, $len);
+	
+	// find file
+	$file = $baseDir . '/' . str_replace('\\', '/', $relativeClass) . '.php';
+	
+	// require the file if exists
+	if (file_exists($file)) {
+		require $file;
+	}
+	
+});
