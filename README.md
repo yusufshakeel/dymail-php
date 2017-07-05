@@ -1,6 +1,10 @@
 # dymail-php
 This is a mail project in php.
 
+# Getting started
+- [Download the latest release.](https://github.com/yusufshakeel/dymail-php/releases)
+- Clone the repo: `git clone https://github.com/yusufshakeel/dymail-php.git`
+
 # What's inside
 ```
 dymail-php/
