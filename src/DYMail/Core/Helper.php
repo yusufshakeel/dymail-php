@@ -1,10 +1,10 @@
 <?php
 /**
- * file: index.php
+ * file: Config.php
  * author: yusuf shakeel
  * github: https://github.com/yusufshakeel/dymail-php
  * date: 12-mar-2014 wed
- * description: This file contains a sample example.
+ * description: this is the helper file.
  *
  * MIT License
  *
@@ -29,47 +29,24 @@
  * SOFTWARE.
  */
 
-require_once 'src/DYMail/DYMail.php';
+namespace DYMail\Core;
 
-try {
+/**
+ * The Helper class.
+ */
+class Helper
+{
 
-    $sender = array(
-        'sender@example.com' => 'Sender'
-    );
+    /**
+     * This function will merge default options with user defined options.
+     *
+     * @param array $option
+     * @param array $defaultOption
+     * @return array
+     */
+    public static function initOption($option, $defaultOption)
+    {
+        return array_merge($defaultOption, $option);
+    }
 
-    $receivers = array(
-        'receiver1@example.com' => 'Receiver 1',
-        'receiver2@example.com' => 'Receiver 2',
-        'receiver3@example.com' => 'Receiver 3'
-    );
-
-    $cc = array(
-        'cc1@example.com' => 'Cc 1',
-        'cc2@example.com' => 'Cc 2',
-        'cc3@example.com' => 'Cc 3'
-    );
-
-    $bcc = array(
-        'bcc1@example.com' => 'Bcc 1',
-        'bcc2@example.com' => 'Bcc 2',
-        'bcc3@example.com' => 'Bcc 3'
-    );
-
-    $subject = 'This is a sample subject.';
-
-    $message = <<<MSG
-<p>This is a sample message.</p>
-MSG;
-
-    $options = array(
-        "emailType" => "SIMPLE"
-    );
-
-    $obj = new DYMail\DYMail($sender, $receivers, $cc, $bcc, $subject, $message, $options);
-
-    $obj->send();
-
-} catch (\Exception $e) {
-    die("Error: " . $e->getMessage());
 }
-?>

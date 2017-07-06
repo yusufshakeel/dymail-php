@@ -14,6 +14,9 @@ This is a mail project in php.
 dymail-php/
 ├── src/
 │   └── DYMail/
+│       ├── Core/
+│       │   ├── Config.php
+│       │   └── Helper.php
 │       ├── autoload.php
 │       └── DYMail.php
 └── index.php
@@ -51,16 +54,20 @@ try {
         'bcc3@example.com' => 'Bcc 3'
     );
 
-    $subject = 'This is a sample subject.';
+    $subject = 'This is the subject of the email.';
 
     $message = <<<MSG
-<p>This is a sample message.</p>
+<p>This is a sample message body of the email.</p>
 MSG;
 
-    $emailType = 'HTML';
+    $options = array(
+        "emailType" => "SIMPLE"
+    );
+    
+    $obj = new DYMail\DYMail($sender, $receivers, $cc, $bcc, $subject, $message, $options);
 
-    $obj = new DYMail\DYMail($sender, $receivers, $cc, $bcc, $subject, $message, $emailType);
-
+    $obj->send();
+    
 } catch (\Exception $e) {
     die("Error: " . $e->getMessage());
 }

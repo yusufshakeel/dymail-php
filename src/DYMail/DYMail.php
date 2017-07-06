@@ -31,6 +31,9 @@
 
 namespace DYMail;
 
+use DYMail\Core\Config as Config;
+use DYMail\Core\Helper as Helper;
+
 class DYMail
 {
 
@@ -71,6 +74,12 @@ class DYMail
     private $message;
 
     /**
+     * options
+     * @var array
+     */
+    private $options = array();
+
+    /**
      * DYMail constructor.
      * @param array $sender
      * @param array $receivers
@@ -78,51 +87,123 @@ class DYMail
      * @param array $bcc
      * @param string $subject
      * @param string $message
-     * @param string $emailType
+     * @param array $options
      */
-    function __construct($sender = array(), $receivers = array(), $cc = array(), $bcc = array(), $subject = '', $message = '', $emailType = 'SIMPLE')
+    function __construct($sender = array(), $receivers = array(), $cc = array(), $bcc = array(), $subject = '', $message = '', $options = array())
+    {
+        $this->setSender($sender);
+
+        $this->setReceivers($receivers);
+
+        $this->setCc($cc);
+
+        $this->setBcc($bcc);
+
+        $this->setSubject($subject);
+
+        $this->options = $options;
+    }
+
+    /**
+     * this will set the sender
+     * @param array $sender
+     */
+    public function setSender($sender = array())
     {
         if (count($sender) === 0) {
-            die('Sender email missing.');
+            throw new \Exception('Sender email address missing.');
         } else {
             $this->sender = $this->_prepareEmailList($sender);
         }
+    }
 
+    /**
+     * this will set the receivers
+     * @param array $receivers
+     */
+    public function setReceivers($receivers = array())
+    {
         if (count($receivers) === 0) {
-            die('Receiver email missing');
+            throw new \Exception('Receiver(s) email address missing.');
         } else {
             $this->receivers = $this->_prepareEmailList($receivers);
         }
+    }
 
+    /**
+     * this will set the cc
+     * @param array $cc
+     */
+    public function setCc($cc = array())
+    {
         if (count($cc) > 0) {
             $this->cc = $this->_prepareEmailList($cc);
         }
+    }
 
+    /**
+     * this will set the bcc
+     * @param array $bcc
+     */
+    public function setBcc($bcc = array())
+    {
         if (count($bcc) > 0) {
             $this->bcc = $this->_prepareEmailList($bcc);
         }
+    }
 
+    /**
+     * this will set the subject of the email
+     * @param string $subject
+     */
+    public function setSubject($subject = '')
+    {
         if (strlen($subject) === 0) {
-            die('Subject missing');
+            throw new \Exception('Subject of the email missing.');
         } else {
             $this->subject = $subject;
         }
+    }
 
+    /**
+     * this will set the message body of the email
+     * @param string $message
+     */
+    public function setMessage($message = '')
+    {
         if (strlen($message) === 0) {
-            die('Message missing');
+            throw new \Exception('Message body of the email missing.');
         } else {
             $this->message = $message;
         }
+    }
 
-        switch ($emailType) {
+    /**
+     * this will send email
+     */
+    public function send()
+    {
+        $this->init();
+
+        switch ($this->options['emailType']) {
             case 'SIMPLE':
                 $this->_sendSimpleEmail();
                 break;
-
             case 'HTML':
                 $this->_sendHTMLEmail();
                 break;
+            default:
+                throw new \Exception('Invalid emailType');
         }
+    }
+
+    /**
+     * this will initialize for sending email
+     */
+    private function init()
+    {
+        // init options
+        $this->options = Helper::initOption($this->options, Config::$defaultOption);
     }
 
     /**
@@ -145,7 +226,7 @@ class DYMail
     }
 
     /**
-     * this function will send html email
+     * this will send html email
      */
     private function _sendHTMLEmail()
     {
@@ -161,11 +242,18 @@ class DYMail
             $headers .= 'Bcc: ' . $this->bcc . "\r\n";
         }
 
-        mail($this->receivers, $this->subject, $this->message, $headers);
+        echo "<textarea>" . $headers . "</textarea>";
+        echo "<textarea>" . $this->sender . "</textarea>";
+        echo "<textarea>" . $this->cc . "</textarea>";
+        echo "<textarea>" . $this->bcc . "</textarea>";
+        echo "<textarea>" . $this->subject . "</textarea>";
+        echo "<textarea>" . $this->message . "</textarea>";
+
+//        mail($this->receivers, $this->subject, $this->message, $headers);
     }
 
     /**
-     * this function will send simple email
+     * this will send simple email
      */
     private function _sendSimpleEmail()
     {
@@ -179,8 +267,16 @@ class DYMail
             $headers .= 'Bcc: ' . $this->bcc . "\r\n";
         }
 
-        mail($this->receivers, $this->subject, $this->message, $headers);
+        echo "<textarea>" . $headers . "</textarea>";
+        echo "<textarea>" . $this->sender . "</textarea>";
+        echo "<textarea>" . $this->cc . "</textarea>";
+        echo "<textarea>" . $this->bcc . "</textarea>";
+        echo "<textarea>" . $this->subject . "</textarea>";
+        echo "<textarea>" . $this->message . "</textarea>";
+
+//        mail($this->receivers, $this->subject, $this->message, $headers);
     }
 
 }
+
 ?>
