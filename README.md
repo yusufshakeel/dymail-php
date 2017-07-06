@@ -5,6 +5,10 @@ This is a mail project in php.
 - [Download the latest release.](https://github.com/yusufshakeel/dymail-php/releases)
 - Clone the repo: `git clone https://github.com/yusufshakeel/dymail-php.git`
 
+# Requirement
+* PHP version 5.4 or higher.
+* Sendmail (other mail server) installed on your server.
+
 # What's inside
 ```
 dymail-php/
