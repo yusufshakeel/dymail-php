@@ -101,32 +101,36 @@ class DYMail
 
         $this->setSubject($subject);
 
+        $this->setMessage($message);
+
         $this->options = $options;
     }
 
     /**
      * this will set the sender
      * @param array $sender
+     * @throws \Exception
      */
     public function setSender($sender = array())
     {
         if (count($sender) === 0) {
             throw new \Exception('Sender email address missing.');
         } else {
-            $this->sender = $this->_prepareEmailList($sender);
+            $this->sender = Helper::prepareEmailList($sender);
         }
     }
 
     /**
      * this will set the receivers
      * @param array $receivers
+     * @throws \Exception
      */
     public function setReceivers($receivers = array())
     {
         if (count($receivers) === 0) {
             throw new \Exception('Receiver(s) email address missing.');
         } else {
-            $this->receivers = $this->_prepareEmailList($receivers);
+            $this->receivers = Helper::prepareEmailList($receivers);
         }
     }
 
@@ -137,7 +141,7 @@ class DYMail
     public function setCc($cc = array())
     {
         if (count($cc) > 0) {
-            $this->cc = $this->_prepareEmailList($cc);
+            $this->cc = Helper::prepareEmailList($cc);
         }
     }
 
@@ -148,13 +152,14 @@ class DYMail
     public function setBcc($bcc = array())
     {
         if (count($bcc) > 0) {
-            $this->bcc = $this->_prepareEmailList($bcc);
+            $this->bcc = Helper::prepareEmailList($bcc);
         }
     }
 
     /**
      * this will set the subject of the email
      * @param string $subject
+     * @throws \Exception
      */
     public function setSubject($subject = '')
     {
@@ -168,6 +173,7 @@ class DYMail
     /**
      * this will set the message body of the email
      * @param string $message
+     * @throws \Exception
      */
     public function setMessage($message = '')
     {
@@ -180,6 +186,7 @@ class DYMail
 
     /**
      * this will send email
+     * @throws \Exception
      */
     public function send()
     {
@@ -207,31 +214,13 @@ class DYMail
     }
 
     /**
-     * this will convert the array of emails and names into a string
-     * @param array $emailArr
-     * @return string
-     */
-    private function _prepareEmailList($emailArr)
-    {
-        $emailStr = '';
-        $keys = array_keys($emailArr);
-        $lastkey = end($keys);
-        foreach ($emailArr as $email => $name) {
-            $emailStr .= $name . ' <' . $email . '>';
-            if ($lastkey !== $email) {
-                $emailStr .= ', ';
-            }
-        }
-        return $emailStr;
-    }
-
-    /**
      * this will send html email
+     * @throws \Exception
      */
     private function _sendHTMLEmail()
     {
-        $headers = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        $headers = "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
         $headers .= 'From: ' . $this->sender . "\r\n";
 
         if (isset($this->cc)) {
@@ -242,18 +231,14 @@ class DYMail
             $headers .= 'Bcc: ' . $this->bcc . "\r\n";
         }
 
-        echo "<textarea>" . $headers . "</textarea>";
-        echo "<textarea>" . $this->sender . "</textarea>";
-        echo "<textarea>" . $this->cc . "</textarea>";
-        echo "<textarea>" . $this->bcc . "</textarea>";
-        echo "<textarea>" . $this->subject . "</textarea>";
-        echo "<textarea>" . $this->message . "</textarea>";
-
-//        mail($this->receivers, $this->subject, $this->message, $headers);
+        if (!mail($this->receivers, $this->subject, $this->message, $headers)) {
+            throw new \Exception('Failed to send email.');
+        }
     }
 
     /**
      * this will send simple email
+     * @throws \Exception
      */
     private function _sendSimpleEmail()
     {
@@ -267,14 +252,9 @@ class DYMail
             $headers .= 'Bcc: ' . $this->bcc . "\r\n";
         }
 
-        echo "<textarea>" . $headers . "</textarea>";
-        echo "<textarea>" . $this->sender . "</textarea>";
-        echo "<textarea>" . $this->cc . "</textarea>";
-        echo "<textarea>" . $this->bcc . "</textarea>";
-        echo "<textarea>" . $this->subject . "</textarea>";
-        echo "<textarea>" . $this->message . "</textarea>";
-
-//        mail($this->receivers, $this->subject, $this->message, $headers);
+        if (!mail($this->receivers, $this->subject, $this->message, $headers)) {
+            throw new \Exception('Failed to send email.');
+        }
     }
 
 }

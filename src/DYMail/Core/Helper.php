@@ -49,4 +49,23 @@ class Helper
         return array_merge($defaultOption, $option);
     }
 
+    /**
+     * this will convert the array of emails and names into a string
+     * @param array $emailArr
+     * @return string
+     */
+    public static function prepareEmailList($emailArr)
+    {
+        $emailStr = '';
+        $keys = array_keys($emailArr);
+        $lastkey = end($keys);
+        foreach ($emailArr as $email => $name) {
+            $emailStr .= $name . ' <' . $email . '>';
+            if ($lastkey !== $email) {
+                $emailStr .= ', ';
+            }
+        }
+        return $emailStr;
+    }
+
 }

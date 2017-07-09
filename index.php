@@ -29,47 +29,59 @@
  * SOFTWARE.
  */
 
-require_once 'src/DYMail/DYMail.php';
+require_once 'src/DYMail/autoload.php';
 
-try {
+$sender = array(
+    'sender@example.com' => 'Sender'
+);
 
-    $sender = array(
-        'sender@example.com' => 'Sender'
-    );
+$receivers = array(
+    'receiver1@example.com' => 'Receiver 1',
+    'receiver2@example.com' => 'Receiver 2',
+    'receiver3@example.com' => 'Receiver 3'
+);
 
-    $receivers = array(
-        'receiver1@example.com' => 'Receiver 1',
-        'receiver2@example.com' => 'Receiver 2',
-        'receiver3@example.com' => 'Receiver 3'
-    );
+$cc = array(
+    'cc1@example.com' => 'Cc 1',
+    'cc2@example.com' => 'Cc 2',
+    'cc3@example.com' => 'Cc 3'
+);
 
-    $cc = array(
-        'cc1@example.com' => 'Cc 1',
-        'cc2@example.com' => 'Cc 2',
-        'cc3@example.com' => 'Cc 3'
-    );
+$bcc = array(
+    'bcc1@example.com' => 'Bcc 1',
+    'bcc2@example.com' => 'Bcc 2',
+    'bcc3@example.com' => 'Bcc 3'
+);
 
-    $bcc = array(
-        'bcc1@example.com' => 'Bcc 1',
-        'bcc2@example.com' => 'Bcc 2',
-        'bcc3@example.com' => 'Bcc 3'
-    );
+$subject = 'This is a sample subject.';
 
-    $subject = 'This is a sample subject.';
-
-    $message = <<<MSG
-<p>This is a sample message.</p>
+$message = <<<MSG
+<!DOCTYPE html>
+<html>
+<head>
+<title>DYMail</title>
+</head>
+<body>
+<h1>Hello World!</h1>
+<p>This is a sample email using dymail-php project.</p>
+<p>Have a nice day :-)</p>
+</body>
+</html>
 MSG;
 
-    $options = array(
-        "emailType" => "SIMPLE"
-    );
+$options = array(
+    "emailType" => "HTML"
+);
+
+try {
 
     $obj = new DYMail\DYMail($sender, $receivers, $cc, $bcc, $subject, $message, $options);
 
     $obj->send();
 
 } catch (\Exception $e) {
+
     die("Error: " . $e->getMessage());
+
 }
 ?>
